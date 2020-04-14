@@ -15,9 +15,9 @@ class Amort:
         self.balance = np.zeros(per)
         self.balance[0] = loan_amt
         self.interest = np.zeros(per)
-        self.cum_interest = 0
+        self.cum_interest = np.zeros(per)
         self.principal = np.zeros(per)
-        self.cum_principal = 0
+        self.cum_principal = np.zeros(per)
         self.calculateAmortPmt()
         self.genAmortSchedule()
 
@@ -38,6 +38,8 @@ class Amort:
             self.balance = self.balance[:i]
             self.interest = self.interest[:i]
             self.principal = self.principal[:i]
+        self.cum_interest = np.cumsum(self.interest)
+        self.cum_principal = np.cumsum(self.principal)
 
     def plotIntVsPrin(self):
         plt.close('all')
@@ -52,6 +54,7 @@ def plot2CumAmorts(a0, a1):
     plt.plot(range(a1.periods), np.cumsum(a1.principal), 'c')
     plt.plot(range(a0.periods), np.cumsum(a0.interest), 'r')
     plt.plot(range(a1.periods), np.cumsum(a1.interest), 'm')
+    plt.grid()
     plt.show()
 
 
@@ -61,6 +64,7 @@ def plot2Amorts(a0, a1):
     plt.plot(range(a1.periods), a1.principal, 'c')
     plt.plot(range(a0.periods), a0.interest, 'r')
     plt.plot(range(a1.periods), a1.interest, 'm')
+    plt.grid()
     plt.show()
 
 
@@ -85,9 +89,9 @@ def dpmt(a0, a1):
 
 
 if __name__ == "__main__":
-    import amortize
-    a0 = amortize.Amort(1e5, 0.06, 360)
-    a1 = amortize.Amort(1e5, 0.06, 360, 100)
+    import amortization_schedule
+    a0 = amortization_schedule.Amort(1e5, 0.06, 360)
+    a1 = amortization_schedule.Amort(1e5, 0.06, 360, 100)
     print(a0.amort_payment)
     #a0.plotIntVsPrin()
     dt(a0, a1)
